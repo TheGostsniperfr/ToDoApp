@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ToDoAppTheme {
-                Text(text = "Hello world!")
+
             }
         }
     }
