@@ -19,7 +19,7 @@ interface ToDoDoa {
     fun getSelectTask(taskId: Int): Flow<ToDoTask>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTask(task: ToDoTask) // Suspend is to run in asynchronous
+    suspend fun addTask(task: ToDoTask) // Suspend is to run in asynchronous
 
     @Update
     suspend fun updateTask(task: ToDoTask)
