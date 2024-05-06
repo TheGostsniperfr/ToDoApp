@@ -1,10 +1,12 @@
 package fr.thegostsniperfr.todoapp.data.repositories
 
+import dagger.hilt.android.scopes.ViewModelScoped
 import fr.thegostsniperfr.todoapp.data.ToDoDoa
 import fr.thegostsniperfr.todoapp.data.models.ToDoTask
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@ViewModelScoped
 class ToDoRepository @Inject constructor(private val toDoDao : ToDoDoa) {
     val getAllTasks: Flow<List<ToDoTask>> = toDoDao.getAllTasks()
     val sortByLowPriority: Flow<List<ToDoTask>> = toDoDao.sortByLowPriority()
