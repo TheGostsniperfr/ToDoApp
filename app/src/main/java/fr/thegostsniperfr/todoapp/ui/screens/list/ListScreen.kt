@@ -14,23 +14,13 @@ import fr.thegostsniperfr.todoapp.R
 import java.lang.reflect.Modifier
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (Int) -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Tasks")
-                }
-            )
-
+            ListAppbar()
         },
         content = { },
         floatingActionButton = {
