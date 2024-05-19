@@ -11,12 +11,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import fr.thegostsniperfr.todoapp.R
+import fr.thegostsniperfr.todoapp.ui.viewmodels.SharedViewModel
 import java.lang.reflect.Modifier
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListScreen(
-    navigateToTaskScreen: (taskId: Int) -> Unit
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    sharedViewModel: SharedViewModel,
 ) {
     Scaffold(
         topBar = {
@@ -45,10 +47,4 @@ fun ListFab(
             tint = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }
-}
-
-@Composable
-@Preview
-private fun ListScreenPreview() {
-    ListScreen(navigateToTaskScreen = {})
 }
