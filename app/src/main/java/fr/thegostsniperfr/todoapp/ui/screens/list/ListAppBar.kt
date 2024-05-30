@@ -29,6 +29,7 @@ import fr.thegostsniperfr.todoapp.ui.theme.LARGE_PADDING
 import fr.thegostsniperfr.todoapp.ui.theme.TOP_APP_BAR_HEIGHT
 import fr.thegostsniperfr.todoapp.ui.viewmodels.SharedViewModel
 import fr.thegostsniperfr.todoapp.utils.SearchAppBarState
+import fr.thegostsniperfr.todoapp.utils.TrailingIconState
 
 @Composable
 fun ListAppbar(
@@ -37,17 +38,30 @@ fun ListAppbar(
     searchTextState: String
     ) {
 
-//    DefaultListAppBar(
-//        onSearchClicked = { },
-//        onSortClicked = { },
-//        onDeleteClicked = { }
-//    )
-    SearchAppBar(
-        text = "",
-        onTextChange = { },
-        onCloseClicked = { },
-        onSearchClicked = { }
-    )
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultListAppBar(
+                onSearchClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                },
+                onSortClicked = { },
+                onDeleteClicked = { }
+            )
+        }
+        else -> {
+            SearchAppBar(
+                text = searchTextState,
+                onTextChange = { newText ->
+                    sharedViewModel.searchTextState.value = newText
+                },
+                onCloseClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
+                    sharedViewModel.searchTextState.value = ""
+                },
+                onSearchClicked = { }
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -186,6 +200,10 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
+    var trailingIconState by remember {
+        mutableStateOf(TrailingIconState.READY_TO_CLOSE)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -228,7 +246,21 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        onCloseClicked()
+                        when(trailingIconState) {
+                            TrailingIconState.READY_TO_DELETE -> {
+                                onTextChange("")
+                                trailingIconState = TrailingIconState.READY_TO_CLOSE
+                            }
+
+                            TrailingIconState.READY_TO_CLOSE -> {
+                                if(text.isNotEmpty()) {
+                                    onTextChange("")
+                                } else {
+                                    onCloseClicked()
+                                    trailingIconState = TrailingIconState.READY_TO_DELETE
+                                }
+                            }
+                        }
                     }
                 ) {
                     Icon(
